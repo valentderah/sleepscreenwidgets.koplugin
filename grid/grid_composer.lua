@@ -5,12 +5,14 @@ local HorizontalSpan = require("ui/widget/horizontalspan")
 local Screen = Device.screen
 local VerticalGroup = require("ui/widget/verticalgroup")
 local VerticalSpan = require("ui/widget/verticalspan")
+local util = require("util")
 
+local BannerDp = require("grid.banner_dp")
 local Config = require("config")
-local FrameStyle = require("banner.frame_style")
+local CardTheme = require("banner.card_theme")
 local CellSlot = require("grid.cell_slot")
-local GridGeometry = require("grid.grid_geometry")
 local GridModel = require("grid.grid_model")
+local LayoutSpec = require("grid.layout_spec")
 local Registry = require("banner.widgets.registry")
 local SleepWidgetCard = require("grid.sleep_widget_card")
 local SlotFillHolder = require("grid.slot_fill_holder")
@@ -22,60 +24,41 @@ local function default_span(type_id)
     return Registry.default_col_span(type_id)
 end
 
---- Resolve horizontal / vertical inset in dp (unscaled). Legacy `grid_edge_margin` fills
---- any axis that is not set in saved `banner`.
-local inset_max = assert(
-    tonumber(Config.GRID_EDGE_INSET_MAX),
-    "config GRID_EDGE_INSET_MAX must be a positive number"
-)
-local DEF = Config.DEFAULT_BANNER
 local LAYOUT = Config.GRID_LAYOUT
-
-local function grid_edge_dp_x(B_SETT)
-    local x = tonumber(B_SETT.grid_edge_margin_x)
-    if x == nil then
-        x = tonumber(B_SETT.grid_edge_margin)
-    end
-    if x == nil then
-        x = tonumber(DEF.grid_edge_margin_x)
-    end
-    return math.max(0, math.min(inset_max, math.floor(x)))
-end
-
-local function grid_edge_dp_y(B_SETT)
-    local y = tonumber(B_SETT.grid_edge_margin_y)
-    if y == nil then
-        y = tonumber(B_SETT.grid_edge_margin)
-    end
-    if y == nil then
-        y = tonumber(DEF.grid_edge_margin_y)
-    end
-    return math.max(0, math.min(inset_max, math.floor(y)))
-end
 
 function GridComposer.compose(placements, ctx)
     Registry.ensure_registered()
 
     local B_SETT = ctx.B_SETT
-    local edge_gap_x = Screen:scaleBySize(grid_edge_dp_x(B_SETT))
-    local edge_gap_y = Screen:scaleBySize(grid_edge_dp_y(B_SETT))
-    local inner_w = math.max(LAYOUT.inner_min_px, ctx.screen_w - 2 * edge_gap_x)
-    local inner_h = math.max(LAYOUT.inner_min_px, (ctx.grid_inner_h or ctx.screen_h) - 2 * edge_gap_y)
+    local merged_banner = {}
+    util.tableMerge(merged_banner, Config.DEFAULT_BANNER)
+    util.tableMerge(merged_banner, B_SETT or {})
+
+    local banner_dp = BannerDp.effective_dp(merged_banner)
+    local spec = LayoutSpec.compute({
+        screen_w = ctx.screen_w,
+        screen_h = ctx.screen_h,
+        grid_inner_h = ctx.grid_inner_h or ctx.screen_h,
+        scale_by_size = function(n)
+            return Screen:scaleBySize(n)
+        end,
+        banner_dp = banner_dp,
+    })
+
+    local edge_ml = spec.edge_ml_px
+    local edge_mr = spec.edge_mr_px
+    local edge_mt = spec.edge_mt_px
+    local edge_mb = spec.edge_mb_px
+    local slot_w = spec.slot_w_px
+    local row_h = spec.row_h_px
+    local gutter_x = spec.gutter_x_px
+    local gutter_y = spec.gutter_y_px
+
+    local card_pad = Screen:scaleBySize(banner_dp.widget_padding_dp)
+    local card_r = Screen:scaleBySize(banner_dp.widget_radius_dp)
+
     local grid_cols = GridModel.GRID_COLS
     local grid_rows = GridModel.GRID_ROWS
-    local wg = B_SETT.widget_gap or DEF.widget_gap
-    local gx = B_SETT.grid_gutter_x
-    if gx == nil then gx = wg end
-    local gy = B_SETT.grid_gutter_y
-    if gy == nil then gy = wg end
-    local gutter_x = Screen:scaleBySize(gx)
-    local gutter_y = Screen:scaleBySize(gy)
-    local slot_w, row_h = GridGeometry.slot_and_row_height(
-        inner_w, inner_h, grid_cols, grid_rows, gutter_x, gutter_y
-    )
-
-    local card_pad = Screen:scaleBySize(B_SETT.widget_padding or DEF.widget_padding)
-    local card_r = Screen:scaleBySize(B_SETT.widget_radius or DEF.widget_radius)
 
     local resolved = GridModel.placementsWithSpan(placements or {}, default_span)
     local by_row = {}
@@ -101,7 +84,9 @@ function GridComposer.compose(placements, ctx)
         return m
     end
 
-    local function build_cell(block, cw, ch, zone_tag, col_span)
+    local function build_cell(block, cw, ch, zone_tag, col_span, prow, pcol)
+        ctx.placement_row = prow
+        ctx.placement_col = pcol
         local col = VerticalGroup:new{ align = "center" }
         if not block then
             table.insert(col, VerticalSpan:new{ width = 1 })
@@ -118,9 +103,7 @@ function GridComposer.compose(placements, ctx)
             ctx.cell_max_w = math.max(LAYOUT.cell_content_min_px, content_w)
             ctx.cell_max_h = math.max(LAYOUT.cell_content_min_px, content_h)
             ctx.zone_index = zone_tag
-            local card_palette = (block.type == "calendar_tile" or block.type == "clock_analog")
-                and FrameStyle.card_colors_dark_tile()
-                or FrameStyle.card_colors_light()
+            local card_palette = CardTheme.palette_for_placement(block.type, block.params or {})
             ctx.card_palette = card_palette
             local w = Registry.build(block, ctx)
             if w then
@@ -167,13 +150,14 @@ function GridComposer.compose(placements, ctx)
             local p = starts[col]
             if p then
                 local span = p.span or 1
-                local mw = GridGeometry.merged_span_width(slot_w, gutter_x, span)
+                local mw = LayoutSpec.merged_span_width(slot_w, gutter_x, span)
                 local block = { type = p.type, params = p.params }
                 local zone_tag = r * LAYOUT.zone_tag_row_multiplier + p.col
-                table.insert(row_group, build_cell(block, mw, row_h, zone_tag, span))
+                table.insert(row_group, build_cell(block, mw, row_h, zone_tag, span, r, p.col))
                 col = col + span
             else
-                table.insert(row_group, build_cell(nil, slot_w, row_h, r * LAYOUT.zone_tag_row_multiplier + col, 1))
+                local zone_tag = r * LAYOUT.zone_tag_row_multiplier + col
+                table.insert(row_group, build_cell(nil, slot_w, row_h, zone_tag, 1, r, col))
                 col = col + 1
             end
             if col <= grid_cols then
@@ -186,25 +170,28 @@ function GridComposer.compose(placements, ctx)
         end
     end
 
-    -- FrameContainer margin is a single scalar in KOReader; asymmetric insets use spans.
+    local h_outer_left = HorizontalSpan:new{ width = edge_ml }
+    local h_outer_right = HorizontalSpan:new{ width = edge_mr }
+
     local h_padded = HorizontalGroup:new{
         align = "center",
-        HorizontalSpan:new{ width = edge_gap_x },
+        h_outer_left,
         rows_group,
-        HorizontalSpan:new{ width = edge_gap_x },
+        h_outer_right,
     }
-    local root_content = VerticalGroup:new{
+
+    local root_parts = VerticalGroup:new{
         align = "center",
-        VerticalSpan:new{ width = edge_gap_y },
+        VerticalSpan:new{ width = edge_mt },
         h_padded,
-        VerticalSpan:new{ width = edge_gap_y },
+        VerticalSpan:new{ width = edge_mb },
     }
     return FrameContainer:new{
         background = nil,
         bordersize = 0,
         margin = 0,
         padding = 0,
-        root_content,
+        root_parts,
     }
 end
 

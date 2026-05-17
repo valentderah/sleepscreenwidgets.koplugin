@@ -1,11 +1,42 @@
-local Build = require("banner.widgets.clock.build")
-
 local M = {}
 
+local DEFAULT_WIDGET_PARAMS = {
+    card_theme = "light",
+    menu = {
+        expose = { card_theme = true },
+        order = { "card_theme" },
+    },
+}
+
+local PARAM_FIELDS = {
+    card_theme = {
+        kind = "enum",
+        title = "Card theme",
+        options = {
+            { value = nil, label = "Inherit" },
+            { value = "light", label = "Light" },
+            { value = "dark", label = "Dark" },
+        },
+    },
+}
+
+M.WIDGET_REGISTER_STATIC = {
+    default_params = DEFAULT_WIDGET_PARAMS,
+    param_fields = PARAM_FIELDS,
+}
+
 function M.attach(Registry)
+    local Build = require("banner.widgets.clock.build")
+    local CellMenu = require("banner.widgets.clock.cell_menu")
     Registry.register("clock", function(params, ctx)
         return Build.build(params, ctx)
-    end, { needs_sleep_refresh = true })
+    end, {
+        default_params = M.WIDGET_REGISTER_STATIC.default_params,
+        param_fields = M.WIDGET_REGISTER_STATIC.param_fields,
+        cell_menu = function(ctx)
+            return CellMenu.items(ctx)
+        end,
+    })
 end
 
 return M

@@ -81,7 +81,7 @@ function BannerText.parseFooterText(text, index, Sidecar)
     return text
 end
 
----@param opts table|nil optional: `force_full_width` — always use TextBoxWidget at `max_wid` (short lines still fill width).
+---@param opts table|nil optional: `force_full_width`; `height_adjust` (default true, false = высота ровно max_height).
 function BannerText.buildTextField(B_SETT, HL_SETT, text, font_face, max_height, max_wid, ignoreLineBreaks, isHighlight, text_color, bgcolor_override, opts)
     opts = opts or {}
     local Bb = require("ffi/blitbuffer")
@@ -112,6 +112,12 @@ function BannerText.buildTextField(B_SETT, HL_SETT, text, font_face, max_height,
     if rawequal(bg, nil) then
         bg = Bb.COLOR_WHITE
     end
+    --- false — фиксированная высота max_height (например цитата на всю ячейку); по умолчанию true.
+    local tb_height_adjust = opts.height_adjust
+    if tb_height_adjust == nil then
+        tb_height_adjust = true
+    end
+
     local segments = ignoreLineBreaks and { text } or util.splitToArray(text, "\n")
     for _, item in ipairs(segments) do
         local wgt
@@ -122,7 +128,7 @@ function BannerText.buildTextField(B_SETT, HL_SETT, text, font_face, max_height,
                 width = max_wid,
                 alignment = "left",
                 height = max_height,
-                height_adjust = true,
+                height_adjust = tb_height_adjust,
                 height_overflow_show_ellipsis = true,
                 justified = isHighlight and type(HL_SETT) == "table" and HL_SETT.justify,
                 fgcolor = fg,
@@ -145,7 +151,7 @@ function BannerText.buildTextField(B_SETT, HL_SETT, text, font_face, max_height,
                     width = max_wid,
                     alignment = "left",
                     height = max_height,
-                    height_adjust = true,
+                    height_adjust = tb_height_adjust,
                     height_overflow_show_ellipsis = true,
                     justified = isHighlight and type(HL_SETT) == "table" and HL_SETT.justify,
                     fgcolor = fg,

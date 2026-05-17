@@ -1,10 +1,6 @@
-local TextViewer = require("ui/widget/textviewer")
-local UIManager = require("ui/uimanager")
-
 local Settings = require("settings")
 
 local MenuLayout = require("menu.menu_layout")
-local placeholder_help = require("placeholders")
 
 local _ = require("l10n").gettext
 
@@ -24,23 +20,7 @@ function MenuSleep.buildEnableToggleEntry()
     }
 end
 
-function MenuSleep.buildHelpEntry()
-    require("l10n").load()
-    return {
-        text = _("Template widget codes"),
-        callback = function()
-            local body = placeholder_help(_)
-            UIManager:show(TextViewer:new{
-                title = _("Template widget codes"),
-                text = body,
-                justified = false,
-                alignment = "left",
-            })
-        end,
-    }
-end
-
---- All plugin entries: enable, grid editor, settings, template help (under one submenu).
+--- All plugin entries: enable, grid editor, settings (under one submenu).
 function MenuSleep.buildSleepscreenwidgetsSubmenu(_plugin_inst)
     require("l10n").load()
     local items = {
@@ -50,7 +30,6 @@ function MenuSleep.buildSleepscreenwidgetsSubmenu(_plugin_inst)
     for i = 1, #mid do
         table.insert(items, mid[i])
     end
-    table.insert(items, MenuSleep.buildHelpEntry())
     return items
 end
 

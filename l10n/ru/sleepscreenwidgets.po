@@ -2,8 +2,23 @@ msgid ""
 msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 
+msgid "%d min to goal"
+msgstr "%d мин до цели"
+
+msgid "%d pages to goal"
+msgstr "%d стр. до цели"
+
+msgid "%s · %s"
+msgstr "%s · %s"
+
 msgid "%T %c …"
 msgstr "%T %c …"
+
+msgid "0 = disabled"
+msgstr "0 = отключено"
+
+msgid "0 = no cap ring"
+msgstr "0 = без верхнего предела кольца"
 
 msgid "1 column"
 msgstr "1 колонка"
@@ -15,49 +30,115 @@ msgid "3 columns"
 msgstr "3 колонки"
 
 msgid "6×3 sleep banner grid with Frame-style widget cards (1–3 column wide widgets): clocks, templates, highlights, date/battery/book/calendar, and reading time."
-msgstr "Сетка баннера сна 6×3 с карточками виджетов в стиле Frame (ширина 1–3 колонки): часы, шаблоны, подсветки, дата/батарея/книга/календарь и время чтения."
+msgstr "Сетка баннера сна 6×3 с карточками виджетов в стиле Frame (ширина 1–3 колонки): часы, шаблоны, цитаты, дата/батарея/книга/календарь и время чтения."
 
-msgid "Analog clock"
-msgstr "Аналоговые часы"
+msgid "Activity"
+msgstr "Активность"
+
+msgid "Activity layout"
+msgstr "Режим активности"
+
+msgid "Activity: daily rings"
+msgstr "Активность: дневные кольца"
+
+msgid "Activity: week strip"
+msgstr "Активность: недельная лента"
+
+msgid "Adjust per-widget parameters exposed via params.menu (defaults include the reading goal, «current book», and calendar card theme)."
+msgstr "Параметры отдельных виджетов из params.menu (по умолчанию: цель чтения, «текущая книга», тема карточки календаря)."
 
 msgid "Analog dial diameter % (50–100)…"
 msgstr "Диаметр аналогового циферблата, % (50–100)…"
 
-msgid "Banner refresh interval (seconds)"
-msgstr "Интервал обновления баннера (сек)"
-
 msgid "Battery status"
 msgstr "Батарея"
 
-msgid "Calendar tile"
+msgid "Bottom inset (px)"
+msgstr "Нижний отступ (px)"
+
+msgid "Calendar"
 msgstr "Календарь"
+
+msgid "Calendar layout"
+msgstr "Режим календаря"
+
+msgid "Calendar: day view"
+msgstr "Календарь: день"
+
+msgid "Calendar: month grid"
+msgstr "Календарь: сетка месяца"
+
+msgid "Calendar: week starts Monday"
+msgstr "Календарь: неделя с понедельника"
+
+msgid "Calendar: week starts Sunday"
+msgstr "Календарь: неделя с воскресенья"
 
 msgid "Cancel"
 msgstr "Отмена"
 
+msgid "Card theme"
+msgstr "Тема карточки"
+
+msgid "Clear custom per-edge grid insets"
+msgstr "Сбросить отступы сетки по краям"
+
 msgid "Clock"
 msgstr "Часы"
 
-msgid "Current book"
-msgstr "Текущая книга"
+msgid "Clock face: analog"
+msgstr "Циферблат: аналоговый"
+
+msgid "Clock face: digital (text)"
+msgstr "Циферблат: цифры (текст)"
+
+msgid "Column gap"
+msgstr "Зазор столбцов"
+
+msgid "Current book status"
+msgstr "Статус текущей книги"
 
 msgid "Daily goal (minutes, 0 = no ring cap)"
-msgstr "Дневная цель (минуты, 0 = без верхнего предела кольца)"
+msgstr "Дневная цель (минуты, 0 = без ограничения кольца)"
+
+msgid "Daily goal (pages, 0 = disabled)"
+msgstr "Дневная цель (страницы, 0 = выкл.)"
+
+msgid "Daily goal (pages)…"
+msgstr "Дневная цель (страницы)…"
 
 msgid "Daily goal (statistics minutes)…"
 msgstr "Дневная цель (минуты из статистики)…"
 
-msgid "Date & time header"
+msgid "Daily goal minutes"
+msgstr "Дневная цель (минуты)"
+
+msgid "Daily goal pages"
+msgstr "Дневная цель (страницы)"
+
+msgid "Daily goals reached"
+msgstr "Дневные цели выполнены"
+
+msgid "Daily pages goal reached"
+msgstr "Дневная цель по страницам выполнена"
+
+msgid "Daily rings"
+msgstr "Дневные кольца"
+
+msgid "Daily time goal reached"
+msgstr "Дневная цель по времени выполнена"
+
+msgid "Dark"
+msgstr "Тёмная"
+
+msgid "Date & time"
 msgstr "Дата и время"
 
-msgid "Default gap"
-msgstr "Общий зазор"
-
-msgid "Default grid / widget gap (px)"
-msgstr "Общий зазор сетки и виджетов (px)"
+msgid "Day"
+msgstr "День"
 
 msgid "Dial diameter"
-msgstr "Диаметр циферблата (%)"
+msgstr "Диаметр циферблата"
 
 msgid "Edit template pattern…"
 msgstr "Изменить шаблон текста…"
@@ -65,11 +146,11 @@ msgstr "Изменить шаблон текста…"
 msgid "Edit time format…"
 msgstr "Изменить формат времени…"
 
-msgid "Edit…"
-msgstr "Изменить…"
+msgid "ETA"
+msgstr "Осталось"
 
-msgid "Footer template uses % codes from placeholder reference."
-msgstr "В подписи к цитате используйте коды с % — см. справку «Коды шаблона виджета»."
+msgid "Footer line: use %%DT, %%HM, %%PG, %%C, %%A, %%T in banner highlight settings (doubled %%)."
+msgstr "Строка под цитатой: в настройках цитаты в баннере используйте %%DT, %%HM, %%PG, %%C, %%A, %%T (двойной %%)."
 
 msgid "Grid column gap (px, 0 = default gap)"
 msgstr "Зазор между столбцами сетки (px, 0 = общий зазор)"
@@ -79,6 +160,18 @@ msgstr "Горизонтальный отступ сетки (px)"
 
 msgid "Grid horizontal inset from screen (px)"
 msgstr "Горизонтальный отступ сетки от краёв экрана (px)"
+
+msgid "Grid inset: bottom edge (px)"
+msgstr "Отступ сетки: нижний край (px)"
+
+msgid "Grid inset: left edge (px)"
+msgstr "Отступ сетки: левый край (px)"
+
+msgid "Grid inset: right edge (px)"
+msgstr "Отступ сетки: правый край (px)"
+
+msgid "Grid inset: top edge (px)"
+msgstr "Отступ сетки: верхний край (px)"
 
 msgid "Grid row gap (px, 0 = default gap)"
 msgstr "Зазор между строками сетки (px, 0 = общий зазор)"
@@ -90,13 +183,28 @@ msgid "Grid vertical inset from screen (px)"
 msgstr "Вертикальный отступ сетки от краёв экрана (px)"
 
 msgid "Highlight uses document annotations (see KOReader docs)."
-msgstr "Подсветка берётся из заметок в документе (см. документацию KOReader)."
+msgstr "Цитаты берутся из пометок к тексту в книге (см. документацию KOReader)."
+
+msgid "Inherit"
+msgstr "Как в теме"
+
+msgid "Left inset (px)"
+msgstr "Левый отступ (px)"
 
 msgid "Left/right margin between the screen border and the 6×3 grid; scaled for DPI. When unset, the combined \"legacy\" inset value is used for this axis."
 msgstr "Поля слева и справа между краем экрана и сеткой 6×3; масштабируется под DPI. Если не задано отдельно, для этой оси используется общее (устаревшее) значение отступа."
 
+msgid "Light"
+msgstr "Светлая"
+
 msgid "MIN"
 msgstr "МИН"
+
+msgid "Monday"
+msgstr "Понедельник"
+
+msgid "Month grid"
+msgstr "Сетка месяца"
 
 msgid "No book open"
 msgstr "Нет открытой книги"
@@ -104,26 +212,41 @@ msgstr "Нет открытой книги"
 msgid "No book selected"
 msgstr "Книга не выбрана"
 
+msgid "No exposed widget parameters"
+msgstr "Нет доступных параметров виджетов"
+
+msgid "No goals set"
+msgstr "Цели не заданы"
+
 msgid "No quotes of the selected highlight types"
-msgstr "Нет цитат выбранных типов подсветки"
+msgstr "Не найдено цитат среди выбранных типов"
 
 msgid "No quotes saved for this book yet"
 msgstr "Для этой книги ещё нет сохранённых цитат"
 
+msgid "No statistics"
+msgstr "Нет данных статистики"
+
 msgid "Not enough space for this widget here."
 msgstr "Недостаточно места для этого виджета."
 
+msgid "PAGES"
+msgstr "СТР"
+
 msgid "Random highlight"
-msgstr "Случайная подсветка"
+msgstr "Случайная цитата"
 
-msgid "READING · TODAY"
-msgstr "ЧТЕНИЕ · СЕГОДНЯ"
-
-msgid "Reading time today"
-msgstr "Чтение сегодня"
+msgid "Reading activity"
+msgstr "Активность чтения"
 
 msgid "Remove widget"
 msgstr "Удалить виджет"
+
+msgid "Remove left/right/top/bottom overrides so the symmetric values from the banner menu apply."
+msgstr "Убрать отступы по краям и снова использовать симметричные значения из меню баннера."
+
+msgid "Right inset (px)"
+msgstr "Правый отступ (px)"
 
 msgid "Row %d (%s)"
 msgstr "Строка %d (%s)"
@@ -140,38 +263,44 @@ msgstr "Строка %d, столбец %d — %s (%d кол.)"
 msgid "Row %d, column %d — empty"
 msgstr "Строка %d, столбец %d — пусто"
 
+msgid "Row gap"
+msgstr "Зазор строк"
+
 msgid "Save"
 msgstr "Сохранить"
 
 msgid "Settings"
 msgstr "Настройки"
 
-msgid "Sleep banner refresh interval (seconds, 0 = off)"
-msgstr "Интервал обновления баннера сна (сек, 0 = выкл.)"
+msgid "Show book cover thumbnail"
+msgstr "Миниатюра обложки книги"
+
+msgid "Sleep screen message"
+msgstr "Сообщение экрана сна"
 
 msgid "Sleepscreen widgets"
 msgstr "Sleepscreen widgets"
 
+msgid "Streak"
+msgstr "Серия"
+
 msgid "strftime format"
 msgstr "Формат strftime"
+
+msgid "Sunday"
+msgstr "Воскресенье"
 
 msgid "Template"
 msgstr "Шаблон"
 
-msgid "Template widget codes"
-msgstr "Коды шаблона виджета"
-
 msgid "Text template"
-msgstr "Текст по шаблону"
+msgstr "Текстовый шаблон"
 
 msgid "That width does not fit here."
 msgstr "Такая ширина здесь не помещается."
 
-msgid "This cell is part of a widget anchored at row %d, column %d."
-msgstr "Эта ячейка — часть виджета с якорем в строке %d, столбце %d."
-
-msgid "Title & stats lines use the same codes as the KOReader sleep screen message editor:\n\n"
-msgstr "Строки заголовка и прогресса используют те же коды, что редактор сообщения экрана сна в KOReader:\n\n"
+msgid "Top inset (px)"
+msgstr "Верхний отступ (px)"
 
 msgid "Top/bottom margin between the screen border and the 6×3 grid; scaled for DPI. When unset, the combined \"legacy\" inset value is used for this axis."
 msgstr "Поля сверху и снизу между краем экрана и сеткой 6×3; масштабируется под DPI. Если не задано отдельно, для этой оси используется общее (устаревшее) значение отступа."
@@ -179,8 +308,20 @@ msgstr "Поля сверху и снизу между краем экрана �
 msgid "Untitled"
 msgstr "Без названия"
 
-msgid "Default after plugin update is 10 minutes (600 s). Use 0 to turn auto-refresh off. When greater than zero, dynamic widgets (clock, date, battery, calendar, analog clock) refresh periodically. Values below 60 seconds (1 minute) are clamped to 60 seconds. Large intervals save battery."
-msgstr "По умолчанию после обновления плагина — 10 минут (600 с). Значение 0 отключает автообновление. При значении больше нуля динамические виджеты (часы, дата, батарея, календарь, аналоговые часы) периодически обновляются. Значения ниже 60 секунд (1 минуты) ограничиваются до 60 секунд. Большие интервалы экономят заряд."
+msgid "Wallpaper"
+msgstr "Обои"
+
+msgid "Week strip"
+msgstr "Недельная лента"
+
+msgid "Week starts on"
+msgstr "Начало недели"
+
+msgid "Week title…"
+msgstr "Заголовок недели…"
+
+msgid "Week widget title (empty = default)"
+msgstr "Заголовок виджета недели (пусто — по умолчанию)"
 
 msgid "When ON, replaces the sleep-screen banner with the 6×3 grid layout when KOReader uses Banner message mode."
 msgstr "Если включено, баннер экрана сна заменяется сеткой 6×3 при режиме сообщения «Banner» в KOReader."
@@ -190,6 +331,9 @@ msgstr "Скругление углов виджета"
 
 msgid "Widget corner radius (px)"
 msgstr "Скругление углов виджета (px)"
+
+msgid "Widget instances (parameters)"
+msgstr "Параметры экземпляров виджетов"
 
 msgid "Widget padding"
 msgstr "Внутренний отступ виджета"
@@ -206,20 +350,29 @@ msgstr "Ширина виджета: 2 колонки"
 msgid "Widget width: 3 columns"
 msgstr "Ширина виджета: 3 колонки"
 
-msgid "Widgets grid (6×3)"
-msgstr "Сетка виджетов (6×3)"
+msgid "Widgets grid"
+msgstr "Сетка виджетов"
 
-msgid "Column gap"
-msgstr "Зазор столбцов"
+msgid "Default gap"
+msgstr "Общий зазор"
 
-msgid "Row gap"
-msgstr "Зазор строк"
+msgid "Default grid / widget gap (px)"
+msgstr "Общий зазор сетки и виджетов (px)"
 
-msgid "\n\n\nQuote footer (under the highlight) uses doubled percents so it does not clash with KOReader codes:\n\n"
-msgstr "\n\n\nПодпись под цитатой использует двойной символ процента, чтобы не пересекаться с кодами KOReader:\n\n"
+msgid "min"
+msgstr "мин"
 
-msgid "%T title\n%A author\n%S series\n%t total pages\n%c current page\n%l pages left in chapter\n%p book percentage read\n%H time left in book\n%C chapter title\n%P chapter percentage read\n%h time left in chapter\n%F file path\n%f file name\n%b battery level\n%B battery symbol\n%r separator (reader footer separator)\n%D current date (yyyy-mm-dd)\n%d current date (mm-dd)\n%m current time (hh:mm)\n%M current time (hh:mm:ss)\n"
-msgstr "%T title\n%A author\n%S series\n%t total pages\n%c current page\n%l pages left in chapter\n%p book percentage read\n%H time left in book\n%C chapter title\n%P chapter percentage read\n%h time left in chapter\n%F file path\n%f file name\n%b battery level\n%B battery symbol\n%r separator (reader footer separator)\n%D current date (yyyy-mm-dd)\n%d current date (mm-dd)\n%m current time (hh:mm)\n%M current time (hh:mm:ss)\n"
+msgid "—"
+msgstr "—"
 
-msgid "%%DT date of highlight (short)\n%%HM time of highlight (hh:mm)\n%%PG page / page label of highlight\n%%C chapter of highlight\n%%A author (document metadata)\n%%T title (document metadata)\n\nUse \\n in templates for a line break.\n"
-msgstr "%%DT date of highlight (short)\n%%HM time of highlight (hh:mm)\n%%PG page / page label of highlight\n%%C chapter of highlight\n%%A author (document metadata)\n%%T title (document metadata)\n\nUse \\n in templates for a line break.\n"
+msgid "Overrides the symmetric horizontal inset for the left edge only. Matches the symmetric X value unless you customize it."
+msgstr "Переопределяет симметричный горизонтальный отступ только для левого края. По умолчанию совпадает с общим значением по оси X."
+
+msgid "Overrides the symmetric horizontal inset for the right edge only."
+msgstr "Переопределяет симметричный горизонтальный отступ только для правого края."
+
+msgid "Overrides the symmetric vertical inset for the bottom edge only."
+msgstr "Переопределяет симметричный вертикальный отступ только для нижнего края."
+
+msgid "Overrides the symmetric vertical inset for the top edge only."
+msgstr "Переопределяет симметричный вертикальный отступ только для верхнего края."

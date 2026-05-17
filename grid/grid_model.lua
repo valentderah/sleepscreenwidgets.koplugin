@@ -110,7 +110,7 @@ function GridModel.normalizePlacements(raw_list, default_fn)
 end
 
 function GridModel.wrapSaved(placements)
-    return { format_version = 2, placements = placements or {} }
+    return { grid_version = 3, placements = placements or {} }
 end
 
 function GridModel.emptySaved()
@@ -119,10 +119,10 @@ end
 
 function GridModel.parseSaved(blob, default_fn)
     default_fn = default_fn or function() return 1 end
-    if type(blob) == "table" and blob.format_version == 2 and type(blob.placements) == "table" then
-        return GridModel.normalizePlacements(blob.placements, default_fn)
+    if type(blob) ~= "table" or blob.grid_version ~= 3 or type(blob.placements) ~= "table" then
+        return {}
     end
-    return {}
+    return GridModel.normalizePlacements(blob.placements, default_fn)
 end
 
 function GridModel.placementsWithSpan(list, default_fn)
@@ -142,6 +142,25 @@ function GridModel.placementsWithSpan(list, default_fn)
         })
     end
     return out
+end
+
+--- `occ[row][col]` true if covered by any placement (for editor free-region checks).
+function GridModel.occupancy_flags(placements, default_fn)
+    default_fn = default_fn or function() return 1 end
+    local occ = {}
+    for r = 1, GridModel.GRID_ROWS do
+        occ[r] = { false, false, false }
+    end
+    local pws = GridModel.placementsWithSpan(placements, default_fn)
+    for _, p in ipairs(pws) do
+        for dc = 0, p.span - 1 do
+            local c = p.col + dc
+            if c <= GridModel.GRID_COLS then
+                occ[p.row][c] = true
+            end
+        end
+    end
+    return occ
 end
 
 return GridModel

@@ -1,8 +1,9 @@
 --[[ Placements / widget editing via nested TouchMenu tables (6×3 grid, horizontal span). ]]
 local InfoMessage = require("ui/widget/infomessage")
-local InputDialog = require("ui/widget/inputdialog")
 local UIManager = require("ui/uimanager")
 
+local Config = require("config")
+local CellMenuContext = require("grid.cell_menu_context")
 local GridModel = require("grid.grid_model")
 local Registry = require("banner.widgets.registry")
 local RowMenuHint = require("grid.row_menu_hint")
@@ -34,19 +35,7 @@ local function copy_params(p)
 end
 
 local function region_free(placements, row, col, span)
-    local occ = {}
-    for r = 1, GridModel.GRID_ROWS do
-        occ[r] = { false, false, false }
-    end
-    local pws = GridModel.placementsWithSpan(placements, default_fn)
-    for _, p in ipairs(pws) do
-        for dc = 0, p.span - 1 do
-            local c = p.col + dc
-            if c <= GridModel.GRID_COLS then
-                occ[p.row][c] = true
-            end
-        end
-    end
+    local occ = GridModel.occupancy_flags(placements, default_fn)
     for dc = 0, span - 1 do
         local c = col + dc
         if c > GridModel.GRID_COLS or occ[row][c] then
@@ -134,24 +123,35 @@ local function try_set_span(idx, span_val, touchmenu)
 end
 
 local function default_widget(widget_type)
+    Registry.ensure_registered()
     if widget_type == "template" then
-        return { type = "template", params = { pattern = "%T", role = "title" } }
+        return { type = "template", params = Config.default_template_widget_params() }
     elseif widget_type == "highlight" then
         return { type = "highlight", params = {} }
     elseif widget_type == "clock" then
-        return { type = "clock", params = { format = "%H:%M", font_face = "cfont", font_size = 22 } }
-    elseif widget_type == "clock_analog" then
-        return { type = "clock_analog", params = { diameter_pct = 100 } }
-    elseif widget_type == "header_datetime" then
-        return { type = "header_datetime", params = {} }
-    elseif widget_type == "battery_status" then
-        return { type = "battery_status", params = {} }
+        return {
+            type = "clock",
+            params = Config.default_digital_clock_params(),
+        }
+    elseif widget_type == "datetime" then
+        return { type = "datetime", params = {} }
+    elseif widget_type == "battery" then
+        return { type = "battery", params = {} }
     elseif widget_type == "reading_now" then
-        return { type = "reading_now", params = {} }
-    elseif widget_type == "calendar_tile" then
-        return { type = "calendar_tile", params = {} }
-    elseif widget_type == "today_reading" then
-        return { type = "today_reading", params = { daily_goal_minutes = 60 } }
+        return {
+            type = "reading_now",
+            params = Registry.normalize_widget_params("reading_now", {}),
+        }
+    elseif widget_type == "calendar" then
+        return {
+            type = "calendar",
+            params = Registry.normalize_widget_params("calendar", {}),
+        }
+    elseif widget_type == "activity" then
+        return {
+            type = "activity",
+            params = Registry.normalize_widget_params("activity", {}),
+        }
     end
     return { type = widget_type, params = {} }
 end
@@ -219,16 +219,16 @@ function GridEditor.addWidgetMenu(row, col)
             end,
         }
     end
+
     return {
-        item_with_width(_("Text template"), "template"),
-        item_with_width(_("Random highlight"), "highlight"),
+        item_with_width(_("Date & time"), "datetime"),
         item_with_width(_("Clock"), "clock"),
-        item_with_width(_("Analog clock"), "clock_analog"),
-        item_with_width(_("Date & time header"), "header_datetime"),
-        item_with_width(_("Battery status"), "battery_status"),
-        item_with_width(_("Current book"), "reading_now"),
-        item_with_width(_("Calendar tile"), "calendar_tile"),
-        item_with_width(_("Reading time today"), "today_reading"),
+        item_with_width(_("Random highlight"), "highlight"),
+        item_with_width(_("Battery status"), "battery"),
+        item_with_width(_("Current book status"), "reading_now"),
+        item_with_width(_("Calendar"), "calendar"),
+        item_with_width(_("Activity"), "activity"),
+        item_with_width(_("Text template"), "template"),
     }
 end
 
@@ -249,6 +249,7 @@ function GridEditor.widgetMenu(row, col)
         return {}
     end
     local items = {}
+    Registry.ensure_registered()
 
     local function effective_span()
         local pl = Settings:getGridPlacements()
@@ -295,178 +296,9 @@ function GridEditor.widgetMenu(row, col)
         end,
     })
 
-    if widget.type == "template" then
-        table.insert(items, {
-            text = _("Edit template pattern…"),
-            keep_menu_open = true,
-            callback = function(touchmenu)
-                local dlg
-                local pl = Settings:getGridPlacements()
-                local w = pl[anchor_index(pl, row, col)]
-                dlg = InputDialog:new{
-                    title = _("Template"),
-                    input = (w and w.params.pattern) or "",
-                    input_hint = _("%T %c …"),
-                    buttons = {{
-                        {
-                            text = _("Cancel"),
-                            callback = function()
-                                UIManager:close(dlg)
-                            end,
-                        },
-                        {
-                            text = _("Save"),
-                            is_enter_default = true,
-                            callback = function()
-                                local pl2 = Settings:getGridPlacements()
-                                local w2 = pl2[anchor_index(pl2, row, col)]
-                                if w2 then
-                                    w2.params.pattern = dlg:getInputText()
-                                    Settings:saveGridPlacements(pl2)
-                                end
-                                UIManager:close(dlg)
-                                pop_menu_one_level(touchmenu)
-                            end,
-                        },
-                    }},
-                }
-                UIManager:show(dlg)
-                dlg:onShowKeyboard()
-            end,
-        })
-    elseif widget.type == "clock_analog" then
-        table.insert(items, {
-            text = _("Analog dial diameter % (50–100)…"),
-            keep_menu_open = true,
-            callback = function(touchmenu)
-                local pl = Settings:getGridPlacements()
-                local w = pl[anchor_index(pl, row, col)]
-                local dlg
-                dlg = InputDialog:new{
-                    title = _("Dial diameter"),
-                    input = tostring((w and w.params.diameter_pct) or 100),
-                    buttons = {{
-                        {
-                            text = _("Cancel"),
-                            callback = function()
-                                UIManager:close(dlg)
-                            end,
-                        },
-                        {
-                            text = _("Save"),
-                            is_enter_default = true,
-                            callback = function()
-                                local n = tonumber(dlg:getInputText())
-                                if n then
-                                    n = math.max(50, math.min(100, math.floor(n)))
-                                    local pl2 = Settings:getGridPlacements()
-                                    local w2 = pl2[anchor_index(pl2, row, col)]
-                                    if w2 then
-                                        w2.params.diameter_pct = n
-                                        Settings:saveGridPlacements(pl2)
-                                    end
-                                end
-                                UIManager:close(dlg)
-                                pop_menu_one_level(touchmenu)
-                            end,
-                        },
-                    }},
-                }
-                UIManager:show(dlg)
-                dlg:onShowKeyboard()
-            end,
-        })
-    elseif widget.type == "clock" then
-        table.insert(items, {
-            text = _("Edit time format…"),
-            keep_menu_open = true,
-            callback = function(touchmenu)
-                local pl = Settings:getGridPlacements()
-                local w = pl[anchor_index(pl, row, col)]
-                local dlg
-                dlg = InputDialog:new{
-                    title = _("strftime format"),
-                    input = (w and w.params.format) or "%H:%M",
-                    buttons = {{
-                        {
-                            text = _("Cancel"),
-                            callback = function()
-                                UIManager:close(dlg)
-                            end,
-                        },
-                        {
-                            text = _("Save"),
-                            is_enter_default = true,
-                            callback = function()
-                                local pl2 = Settings:getGridPlacements()
-                                local w2 = pl2[anchor_index(pl2, row, col)]
-                                if w2 then
-                                    w2.params.format = dlg:getInputText()
-                                    Settings:saveGridPlacements(pl2)
-                                end
-                                UIManager:close(dlg)
-                                pop_menu_one_level(touchmenu)
-                            end,
-                        },
-                    }},
-                }
-                UIManager:show(dlg)
-                dlg:onShowKeyboard()
-            end,
-        })
-    elseif widget.type == "highlight" then
-        table.insert(items, {
-            text = _("Highlight uses document annotations (see KOReader docs)."),
-            keep_menu_open = true,
-            callback = function()
-                UIManager:show(InfoMessage:new{
-                    text = _("Footer template uses %% codes from placeholder reference."),
-                    timeout = 3,
-                })
-            end,
-        })
-    elseif widget.type == "today_reading" then
-        table.insert(items, {
-            text = _("Daily goal (statistics minutes)…"),
-            keep_menu_open = true,
-            callback = function(touchmenu)
-                local pl = Settings:getGridPlacements()
-                local w = pl[anchor_index(pl, row, col)]
-                local dlg
-                dlg = InputDialog:new{
-                    title = _("Daily goal (minutes, 0 = no ring cap)"),
-                    input = tostring((w and w.params.daily_goal_minutes) or 0),
-                    input_type = "number",
-                    buttons = {{
-                        {
-                            text = _("Cancel"),
-                            callback = function()
-                                UIManager:close(dlg)
-                            end,
-                        },
-                        {
-                            text = _("Save"),
-                            is_enter_default = true,
-                            callback = function()
-                                local n = tonumber(dlg:getInputText())
-                                if n ~= nil and n >= 0 then
-                                    local pl2 = Settings:getGridPlacements()
-                                    local w2 = pl2[anchor_index(pl2, row, col)]
-                                    if w2 then
-                                        w2.params.daily_goal_minutes = math.floor(n)
-                                        Settings:saveGridPlacements(pl2)
-                                    end
-                                end
-                                UIManager:close(dlg)
-                                pop_menu_one_level(touchmenu)
-                            end,
-                        },
-                    }},
-                }
-                UIManager:show(dlg)
-                dlg:onShowKeyboard()
-            end,
-        })
+    local ctx = CellMenuContext.new(idx, row, col, pop_menu_one_level)
+    for _, it in ipairs(Registry.cell_menu_items(widget.type, ctx)) do
+        table.insert(items, it)
     end
 
     table.insert(items, {

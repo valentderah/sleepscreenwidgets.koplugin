@@ -5,11 +5,8 @@ local Screen = Device.screen
 
 local Config = require("config")
 local GridComposer = require("grid.grid_composer")
-local Registry = require("banner.widgets.registry")
 local Settings = require("settings")
-local SleepBannerRefresh = require("banner.sleep_banner_refresh")
 local util = require("util")
-local UIManager = require("ui/uimanager")
 
 local og_ui_man_show
 
@@ -75,8 +72,6 @@ local function patched_show(self, widget, ...)
         return og_ui_man_show(self, widget, ...)
     end
 
-    SleepBannerRefresh.stop()
-
     local orig_sleep_widget = cus_pos_container.widget
     local orig_sleep_text = orig_sleep_widget.text
 
@@ -105,23 +100,6 @@ local function patched_show(self, widget, ...)
     cus_pos_container.horizontal_position = 0.5
     cus_pos_container.vertical_position = 0
     cus_pos_container.widget = content_widget
-
-    Registry.ensure_registered()
-    local interval = Settings:effectiveSleepRefreshIntervalSec()
-    if interval > 0 and Registry.placements_want_refresh(placements) then
-        SleepBannerRefresh.start{
-            interval_sec = interval,
-            screensaver_widget = widget,
-            on_tick = function()
-                local oldw = cus_pos_container.widget
-                if oldw and oldw.free then
-                    oldw:free()
-                end
-                cus_pos_container.widget = GridComposer.compose(Settings:getGridPlacements(), make_ctx())
-                UIManager:setDirty(widget, "ui")
-            end,
-        }
-    end
 
     return og_ui_man_show(self, widget, ...)
 end

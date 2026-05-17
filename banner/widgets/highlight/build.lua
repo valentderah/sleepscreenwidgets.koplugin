@@ -100,9 +100,12 @@ function M.build(params, ctx)
     local pal = ctx.card_palette or FrameStyle.card_colors_light()
 
     local footer_color = pal.text_secondary
-
     local footer_tpl = HL_SETT.hl_footer_text or ""
-    local hl_footer_enabled = HL_SETT.showHighlightFooter
+
+    --- Футер «— …» только при ширине в 3 колонки; на 1–2 колонках цитата занимает всю высоту.
+    local col_span = tonumber(ctx.col_span) or 1
+    local hl_footer_enabled = col_span > 2
+        and HL_SETT.showHighlightFooter
         and footer_tpl
         and util.trim(footer_tpl) ~= ""
 
@@ -153,7 +156,7 @@ function M.build(params, ctx)
         true,
         pal.text_primary,
         pal.fill,
-        { force_full_width = true }
+        { force_full_width = true, height_adjust = false }
     )
     local accent_height = highlight_widget:getSize().h
 
