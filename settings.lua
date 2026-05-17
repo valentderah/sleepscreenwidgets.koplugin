@@ -1,16 +1,26 @@
 --[[ Grid layout + banner appearance + plugin flags in LuaSettings (sleepscreenwidgets.lua). ]]
 local DataStorage = require("datastorage")
+local Device = require("device")
 local LuaSettings = require("luasettings")
 local util = require("util")
 
 local Config = require("config")
+local GridEdgeSeed = require("grid.grid_edge_seed")
 local GridModel = require("grid.grid_model")
 local Registry = require("banner.widgets.registry")
 
 local SETTINGS_FILE = "sleepscreenwidgets.lua"
 
---- Types no longer supported (e.g. removed widgets); stripped whenever grid is read or saved.
-local STALE_WIDGET_TYPES = { sleep_stats = true }
+--- Types no longer shipped; stripped whenever grid is read or saved.
+--- Single source of removed type ids — they never re-enter normalized placements.
+local STALE_WIDGET_TYPES = {
+    sleep_stats = true,
+    today_reading = true,
+    battery_status = true,
+    calendar_tile = true,
+    goal = true,
+    weekly_activity = true,
+}
 
 local Settings = {}
 Settings._lua = nil
@@ -28,43 +38,66 @@ local function strip_stale_widgets(placements)
     return out
 end
 
-local function sleep_refresh_default_if_missing(lua)
-    if lua:readSetting("sleep_refresh_interval_sec") == nil then
-        lua:saveSetting("sleep_refresh_interval_sec", Config.SLEEP_REFRESH_INTERVAL.default_sec)
-    end
-end
-
 --- Span for GridModel; ensures widget types are registered first.
 local function grid_span(type_id)
     Registry.ensure_registered()
     return Registry.default_col_span(type_id)
 end
 
-local function migrate_stored_settings(lua)
-    local stored_version = lua:readSetting("schema_version") or 0
-    if stored_version >= Config.SCHEMA_VERSION then
+local function seed_banner_margins_when_new_grid(lua)
+    local screen = Device and Device.screen
+    local can_screen = screen
+        and type(screen.getWidth) == "function"
+        and type(screen.getHeight) == "function"
+        and type(screen.scaleBySize) == "function"
+    if not can_screen then
         return
     end
-    Registry.ensure_registered()
-    local raw = lua:readSetting("grid")
-    local placements
-    if raw == nil then
-        placements = GridModel.normalizePlacements(Config.DEFAULT_GRID_PLACEMENTS, grid_span)
-    else
-        placements = strip_stale_widgets(GridModel.parseSaved(raw, grid_span))
+    local banner_for_seed = {}
+    util.tableMerge(banner_for_seed, Config.DEFAULT_BANNER)
+    local saved_banner = lua:readSetting("banner")
+    if type(saved_banner) == "table" then
+        util.tableMerge(banner_for_seed, saved_banner)
     end
-    lua:saveSetting("grid", GridModel.wrapSaved(placements))
-    lua:saveSetting("schema_version", Config.SCHEMA_VERSION)
-    sleep_refresh_default_if_missing(lua)
-    lua:flush()
+    GridEdgeSeed.strip_deprecated_banner_keys_inplace(banner_for_seed)
+    local seed = GridEdgeSeed.seed_margins({
+        banner = banner_for_seed,
+        screen_w = screen:getWidth(),
+        screen_h = screen:getHeight(),
+        grid_inner_h = screen:getHeight(),
+        scale_by_size = function(n)
+            return screen:scaleBySize(n)
+        end,
+    })
+    if not seed.ok then
+        return
+    end
+    local out = {}
+    util.tableMerge(out, Config.DEFAULT_BANNER)
+    if type(saved_banner) == "table" then
+        util.tableMerge(out, saved_banner)
+    end
+    out.grid_edge_margin_x = seed.grid_edge_margin_x
+    out.grid_edge_margin_y = seed.grid_edge_margin_y
+    GridEdgeSeed.strip_deprecated_banner_keys_inplace(out)
+    lua:saveSetting("banner", out)
 end
 
-local function ensure_default_grid(lua)
-    if lua:readSetting("grid") ~= nil then
-        return
+--- On open: ensure `grid` blob is v3; no migration from older persistence formats.
+local function bootstrap_on_open(lua)
+    local raw = lua:readSetting("grid")
+    local grid_ok = type(raw) == "table" and raw.grid_version == 3 and type(raw.placements) == "table"
+    if not grid_ok then
+        Registry.ensure_registered()
+        local placements = GridModel.normalizePlacements(Config.DEFAULT_GRID_PLACEMENTS, grid_span)
+        lua:saveSetting("grid", GridModel.wrapSaved(placements))
+        seed_banner_margins_when_new_grid(lua)
     end
-    local placements = GridModel.normalizePlacements(Config.DEFAULT_GRID_PLACEMENTS, grid_span)
-    lua:saveSetting("grid", GridModel.wrapSaved(placements))
+    local bn = lua:readSetting("banner")
+    if type(bn) == "table" then
+        GridEdgeSeed.strip_deprecated_banner_keys_inplace(bn)
+        lua:saveSetting("banner", bn)
+    end
     lua:flush()
 end
 
@@ -74,8 +107,7 @@ function Settings:open()
     end
     local dir = DataStorage:getSettingsDir()
     self._lua = LuaSettings:open(dir .. "/" .. SETTINGS_FILE)
-    migrate_stored_settings(self._lua)
-    ensure_default_grid(self._lua)
+    bootstrap_on_open(self._lua)
     return self._lua
 end
 
@@ -110,36 +142,6 @@ function Settings:saveGridPlacements(placements)
     placements = strip_stale_widgets(placements)
     local norm = GridModel.normalizePlacements(placements, grid_span)
     self:open():saveSetting("grid", GridModel.wrapSaved(norm))
-    self:flush()
-end
-
-function Settings:rawSleepRefreshIntervalSec()
-    local v = self:open():readSetting("sleep_refresh_interval_sec")
-    if v == nil then
-        return 0
-    end
-    return math.floor(tonumber(v) or 0)
-end
-
-function Settings:effectiveSleepRefreshIntervalSec()
-    local n = self:rawSleepRefreshIntervalSec()
-    if n <= 0 then
-        return 0
-    end
-    local L = Config.SLEEP_REFRESH_INTERVAL
-    return math.max(L.min_sec, math.min(L.max_sec, n))
-end
-
-function Settings:setSleepRefreshIntervalSec(n)
-    n = math.floor(tonumber(n) or 0)
-    if n < 0 then
-        n = 0
-    end
-    local L = Config.SLEEP_REFRESH_INTERVAL
-    if n > 0 then
-        n = math.min(L.max_sec, n)
-    end
-    self:open():saveSetting("sleep_refresh_interval_sec", n)
     self:flush()
 end
 

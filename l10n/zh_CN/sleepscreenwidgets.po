@@ -2,8 +2,23 @@ msgid ""
 msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 
+msgid "%d min to goal"
+msgstr "距离目标还有 %d 分钟"
+
+msgid "%d pages to goal"
+msgstr "距离目标还有 %d 页"
+
+msgid "%s · %s"
+msgstr "%s · %s"
+
 msgid "%T %c …"
 msgstr "%T %c …"
+
+msgid "0 = disabled"
+msgstr "0 = 关闭"
+
+msgid "0 = no cap ring"
+msgstr "0 = 圆环不设上限"
 
 msgid "1 column"
 msgstr "1 列"
@@ -17,47 +32,113 @@ msgstr "3 列"
 msgid "6×3 sleep banner grid with Frame-style widget cards (1–3 column wide widgets): clocks, templates, highlights, date/battery/book/calendar, and reading time."
 msgstr "6×3 睡眠横幅网格：Frame 风格小组件卡片（1–3 列宽），含时钟、模板、摘录、日期/电量/书籍/日历及阅读时长。"
 
-msgid "Analog clock"
-msgstr "模拟时钟"
+msgid "Activity"
+msgstr "阅读活动"
+
+msgid "Activity layout"
+msgstr "活动布局"
+
+msgid "Activity: daily rings"
+msgstr "活动：每日圆环"
+
+msgid "Activity: week strip"
+msgstr "活动：周条带"
+
+msgid "Adjust per-widget parameters exposed via params.menu (defaults include the reading goal, «current book», and calendar card theme)."
+msgstr "调整各小组件通过 params.menu 公开的参数（默认包含阅读目标、「当前书籍」与日历卡片主题）。"
 
 msgid "Analog dial diameter % (50–100)…"
 msgstr "模拟表盘直径 %（50–100）…"
 
-msgid "Banner refresh interval (seconds)"
-msgstr "横幅刷新间隔（秒）"
-
 msgid "Battery status"
 msgstr "电量状态"
 
-msgid "Calendar tile"
-msgstr "日历格"
+msgid "Bottom inset (px)"
+msgstr "下边距（像素）"
+
+msgid "Calendar"
+msgstr "日历"
+
+msgid "Calendar layout"
+msgstr "日历布局"
+
+msgid "Calendar: day view"
+msgstr "日历：日视图"
+
+msgid "Calendar: month grid"
+msgstr "日历：月视图网格"
+
+msgid "Calendar: week starts Monday"
+msgstr "日历：周一开始"
+
+msgid "Calendar: week starts Sunday"
+msgstr "日历：周日开始"
 
 msgid "Cancel"
 msgstr "取消"
 
+msgid "Card theme"
+msgstr "卡片主题"
+
+msgid "Clear custom per-edge grid insets"
+msgstr "清除自定义各边网格留白"
+
 msgid "Clock"
 msgstr "时钟"
 
-msgid "Current book"
-msgstr "当前书籍"
+msgid "Clock face: analog"
+msgstr "表盘：指针"
+
+msgid "Clock face: digital (text)"
+msgstr "表盘：数字（文本）"
+
+msgid "Column gap"
+msgstr "列间距"
+
+msgid "Current book status"
+msgstr "当前书籍状态"
 
 msgid "Daily goal (minutes, 0 = no ring cap)"
 msgstr "每日目标（分钟，0 表示圆环不设上限）"
 
+msgid "Daily goal (pages, 0 = disabled)"
+msgstr "每日目标（页数，0 表示关闭）"
+
+msgid "Daily goal (pages)…"
+msgstr "每日目标（页数）…"
+
 msgid "Daily goal (statistics minutes)…"
 msgstr "每日目标（统计分钟数）…"
 
-msgid "Date & time header"
+msgid "Daily goal minutes"
+msgstr "每日目标（分钟）"
+
+msgid "Daily goal pages"
+msgstr "每日目标（页）"
+
+msgid "Daily goals reached"
+msgstr "已达每日目标"
+
+msgid "Daily pages goal reached"
+msgstr "已达每日页数目标"
+
+msgid "Daily rings"
+msgstr "每日圆环"
+
+msgid "Daily time goal reached"
+msgstr "已达每日阅读时长目标"
+
+msgid "Dark"
+msgstr "深色"
+
+msgid "Date & time"
 msgstr "日期与时间"
 
-msgid "Default gap"
-msgstr "默认间距"
-
-msgid "Default grid / widget gap (px)"
-msgstr "默认网格/小组件间距（像素）"
+msgid "Day"
+msgstr "日"
 
 msgid "Dial diameter"
-msgstr "表盘直径（%）"
+msgstr "表盘直径"
 
 msgid "Edit template pattern…"
 msgstr "编辑模板正文…"
@@ -65,11 +146,11 @@ msgstr "编辑模板正文…"
 msgid "Edit time format…"
 msgstr "编辑时间格式…"
 
-msgid "Edit…"
-msgstr "编辑…"
+msgid "ETA"
+msgstr "预计剩余"
 
-msgid "Footer template uses % codes from placeholder reference."
-msgstr "脚注模板请使用 % 代码 — 详见「模板小组件代码」说明。"
+msgid "Footer line: use %%DT, %%HM, %%PG, %%C, %%A, %%T in banner highlight settings (doubled %%)."
+msgstr "页脚行：在横幅高亮设置中使用 %%DT、%%HM、%%PG、%%C、%%A、%%T（双写 %%）。"
 
 msgid "Grid column gap (px, 0 = default gap)"
 msgstr "网格列间距（像素，0 表示使用默认）"
@@ -79,6 +160,18 @@ msgstr "网格横向边距（像素）"
 
 msgid "Grid horizontal inset from screen (px)"
 msgstr "网格距屏幕左右留白（像素）"
+
+msgid "Grid inset: bottom edge (px)"
+msgstr "网格留白：下边（像素）"
+
+msgid "Grid inset: left edge (px)"
+msgstr "网格留白：左边（像素）"
+
+msgid "Grid inset: right edge (px)"
+msgstr "网格留白：右边（像素）"
+
+msgid "Grid inset: top edge (px)"
+msgstr "网格留白：上边（像素）"
 
 msgid "Grid row gap (px, 0 = default gap)"
 msgstr "网格行间距（像素，0 表示使用默认）"
@@ -92,11 +185,26 @@ msgstr "网格距屏幕上/下留白（像素）"
 msgid "Highlight uses document annotations (see KOReader docs)."
 msgstr "摘录来自文档批注（参见 KOReader 文档）。"
 
+msgid "Inherit"
+msgstr "继承"
+
+msgid "Left inset (px)"
+msgstr "左侧留白（像素）"
+
 msgid "Left/right margin between the screen border and the 6×3 grid; scaled for DPI. When unset, the combined \"legacy\" inset value is used for this axis."
 msgstr "屏幕左右边与 6×3 网格之间的边距；按 DPI 缩放。若未单独设置该轴，则使用合并后的旧版单边距值。"
 
+msgid "Light"
+msgstr "浅色"
+
 msgid "MIN"
 msgstr "分钟"
+
+msgid "Monday"
+msgstr "周一"
+
+msgid "Month grid"
+msgstr "月网格"
 
 msgid "No book open"
 msgstr "未打开书籍"
@@ -104,26 +212,41 @@ msgstr "未打开书籍"
 msgid "No book selected"
 msgstr "未选择书籍"
 
+msgid "No exposed widget parameters"
+msgstr "没有可配置的小组件参数"
+
+msgid "No goals set"
+msgstr "未设置目标"
+
 msgid "No quotes of the selected highlight types"
 msgstr "没有符合所选突出显示类型的摘录"
 
 msgid "No quotes saved for this book yet"
 msgstr "本书尚无已保存的摘录"
 
+msgid "No statistics"
+msgstr "暂无统计"
+
 msgid "Not enough space for this widget here."
 msgstr "此处空间不足以放置该小组件。"
+
+msgid "PAGES"
+msgstr "页"
 
 msgid "Random highlight"
 msgstr "随机摘录"
 
-msgid "READING · TODAY"
-msgstr "今日阅读 ·"
-
-msgid "Reading time today"
-msgstr "今日阅读时长"
+msgid "Reading activity"
+msgstr "阅读活动"
 
 msgid "Remove widget"
 msgstr "移除小组件"
+
+msgid "Remove left/right/top/bottom overrides so the symmetric values from the banner menu apply."
+msgstr "清除左/右/上/下单边覆盖，恢复使用横幅菜单中的对称留白值。"
+
+msgid "Right inset (px)"
+msgstr "右侧留白（像素）"
 
 msgid "Row %d (%s)"
 msgstr "第 %d 行（%s）"
@@ -140,26 +263,35 @@ msgstr "第 %d 行，第 %d 列 — %s（%d 列）"
 msgid "Row %d, column %d — empty"
 msgstr "第 %d 行，第 %d 列 — 空"
 
+msgid "Row gap"
+msgstr "行间距"
+
 msgid "Save"
 msgstr "保存"
 
 msgid "Settings"
 msgstr "设置"
 
-msgid "Sleep banner refresh interval (seconds, 0 = off)"
-msgstr "睡眠横幅刷新间隔（秒，0 为关闭）"
+msgid "Show book cover thumbnail"
+msgstr "显示书籍封面缩略图"
+
+msgid "Sleep screen message"
+msgstr "睡眠屏幕消息"
 
 msgid "Sleepscreen widgets"
 msgstr "睡眠屏幕小组件"
 
+msgid "Streak"
+msgstr "连续天数"
+
 msgid "strftime format"
 msgstr "strftime 格式"
 
+msgid "Sunday"
+msgstr "周日"
+
 msgid "Template"
 msgstr "模板"
-
-msgid "Template widget codes"
-msgstr "模板小组件代码"
 
 msgid "Text template"
 msgstr "文本模板"
@@ -167,11 +299,8 @@ msgstr "文本模板"
 msgid "That width does not fit here."
 msgstr "该宽度在此处放不下。"
 
-msgid "This cell is part of a widget anchored at row %d, column %d."
-msgstr "此格子属于锚定在第 %d 行、第 %d 列的小组件。"
-
-msgid "Title & stats lines use the same codes as the KOReader sleep screen message editor:\n\n"
-msgstr "标题与进度行使用与 KOReader「睡眠屏幕消息」编辑器相同的代码：\n\n"
+msgid "Top inset (px)"
+msgstr "顶部留白（像素）"
 
 msgid "Top/bottom margin between the screen border and the 6×3 grid; scaled for DPI. When unset, the combined \"legacy\" inset value is used for this axis."
 msgstr "屏幕上/下边缘与 6×3 网格之间的边距；按 DPI 缩放。若未单独设置该轴，则使用合并后的旧版单边距值。"
@@ -179,8 +308,20 @@ msgstr "屏幕上/下边缘与 6×3 网格之间的边距；按 DPI 缩放。若
 msgid "Untitled"
 msgstr "无标题"
 
-msgid "Default after plugin update is 10 minutes (600 s). Use 0 to turn auto-refresh off. When greater than zero, dynamic widgets (clock, date, battery, calendar, analog clock) refresh periodically. Values below 60 seconds (1 minute) are clamped to 60 seconds. Large intervals save battery."
-msgstr "插件更新后默认为 10 分钟（600 秒）。填 0 可关闭自动刷新。大于零时，时钟、日期、电量、日历与指针表会定时刷新；低于 60 秒（1 分钟）的值会被限制为 60 秒。间隔越大越省电。"
+msgid "Wallpaper"
+msgstr "壁纸"
+
+msgid "Week strip"
+msgstr "周条带"
+
+msgid "Week starts on"
+msgstr "一周起始日"
+
+msgid "Week title…"
+msgstr "周标题…"
+
+msgid "Week widget title (empty = default)"
+msgstr "周小组件标题（留空则为默认）"
 
 msgid "When ON, replaces the sleep-screen banner with the 6×3 grid layout when KOReader uses Banner message mode."
 msgstr "开启后，当 KOReader 使用 Banner 消息模式时，用 6×3 网格布局替换睡眠横幅。"
@@ -190,6 +331,9 @@ msgstr "小组件圆角"
 
 msgid "Widget corner radius (px)"
 msgstr "小组件圆角（像素）"
+
+msgid "Widget instances (parameters)"
+msgstr "小组件实例（参数）"
 
 msgid "Widget padding"
 msgstr "小组件内边距"
@@ -206,20 +350,29 @@ msgstr "小组件宽度：2 列"
 msgid "Widget width: 3 columns"
 msgstr "小组件宽度：3 列"
 
-msgid "Widgets grid (6×3)"
-msgstr "小组件网格（6×3）"
+msgid "Widgets grid"
+msgstr "小组件网格"
 
-msgid "Column gap"
-msgstr "列间距"
+msgid "Default gap"
+msgstr "默认间距"
 
-msgid "Row gap"
-msgstr "行间距"
+msgid "Default grid / widget gap (px)"
+msgstr "默认网格/小组件间距（像素）"
 
-msgid "\n\n\nQuote footer (under the highlight) uses doubled percents so it does not clash with KOReader codes:\n\n"
-msgstr "\n\n\n摘录脚注使用双百分号，以免与 KOReader 的消息占位符冲突：\n\n"
+msgid "min"
+msgstr "分钟"
 
-msgid "%T title\n%A author\n%S series\n%t total pages\n%c current page\n%l pages left in chapter\n%p book percentage read\n%H time left in book\n%C chapter title\n%P chapter percentage read\n%h time left in chapter\n%F file path\n%f file name\n%b battery level\n%B battery symbol\n%r separator (reader footer separator)\n%D current date (yyyy-mm-dd)\n%d current date (mm-dd)\n%m current time (hh:mm)\n%M current time (hh:mm:ss)\n"
-msgstr "%T title\n%A author\n%S series\n%t total pages\n%c current page\n%l pages left in chapter\n%p book percentage read\n%H time left in book\n%C chapter title\n%P chapter percentage read\n%h time left in chapter\n%F file path\n%f file name\n%b battery level\n%B battery symbol\n%r separator (reader footer separator)\n%D current date (yyyy-mm-dd)\n%d current date (mm-dd)\n%m current time (hh:mm)\n%M current time (hh:mm:ss)\n"
+msgid "—"
+msgstr "—"
 
-msgid "%%DT date of highlight (short)\n%%HM time of highlight (hh:mm)\n%%PG page / page label of highlight\n%%C chapter of highlight\n%%A author (document metadata)\n%%T title (document metadata)\n\nUse \\n in templates for a line break.\n"
-msgstr "%%DT date of highlight (short)\n%%HM time of highlight (hh:mm)\n%%PG page / page label of highlight\n%%C chapter of highlight\n%%A author (document metadata)\n%%T title (document metadata)\n\nUse \\n in templates for a line break.\n"
+msgid "Overrides the symmetric horizontal inset for the left edge only. Matches the symmetric X value unless you customize it."
+msgstr "仅覆盖左侧对称横向留白；未自定义时与对称 X 值一致。"
+
+msgid "Overrides the symmetric horizontal inset for the right edge only."
+msgstr "仅覆盖右侧对称横向留白。"
+
+msgid "Overrides the symmetric vertical inset for the bottom edge only."
+msgstr "仅覆盖底部对称纵向留白。"
+
+msgid "Overrides the symmetric vertical inset for the top edge only."
+msgstr "仅覆盖顶部对称纵向留白。"

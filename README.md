@@ -2,30 +2,38 @@ English | [Русский](README.ru.md)
 
 # Sleepscreen widgets
 
-A [KOReader](https://github.com/koreader/koreader) plugin that replaces the default sleep screen with a configurable widget grid.
+A [KOReader](https://github.com/koreader/koreader) plugin that replaces the default sleep screen with a configurable widget grid in an **iOS-style** layout.
 
-![Widget example](assets/screenshot-sleep-grid.png)
+![Sleep screen grid on an e-reader: date and time, current book, quote, calendar, and activity widgets](assets/screenshot-sleep-grid.png)
 
 ## Features
 
-- **Widget types**
-  - **Current book** — Title, author, and progress for the book you have open.
-  - **Quote** — A random saved quote from the current book.
-  - **Calendar** — Current date.
-  - **Clock** — Both analog and digital.
-  - **Template** — Free text with placeholders.
-  - **Daily progress** — How much you read today.
+### Widget types
+
+- **Date & time** — Shows the current date and time; the date is frozen at the moment the device goes to sleep.
+- **Clock** — Digital or analog dial.
+- **Battery** — Card with battery charge level.
+- **Current book** — Title, author, progress, and estimated reading time remaining.
+- **Random quote** — A random saved quote from the current book.
+- **Calendar** — Month grid or today-only day view.
 
 ## Configuring KOReader
 
 1. Enable **Settings** → **Screen** → **Sleep screen** → **Sleep screen message** → **Add custom message to sleep screen**.
+
 2. Open **Container and position** and choose **Banner**, not **Box**.
 
-If any of this is missing, KOReader will show the normal sleep message instead of the grid.
+If any of this is not set up, KOReader will show the usual sleep message instead of the grid.
 
-## Configuring plugin
+## Configuring the plugin
 
-After the plugin is enabled in **Plugin management** you can find all settings for plugin in **Screen → Screensaver → Sleepscreen widgets**. You can rearrange the widgets in the grid, adjust the spacing between them and set the widgets refresh rate (default 10 minutes).
+After enabling the plugin in **Plugin management**, you can configure it under **Screen → Screensaver → Sleepscreen widgets**.
+
+### Available options
+
+- **Free placement and width** — You can choose both the row and how wide each widget is.
+- **Light and dark themes** — Many widgets include **Card theme**: **Light** or **Dark**, so cards stay readable on different sleep-screen backgrounds.
+- **Global settings** — Corner radius, spacing between grid cells, and how the grid is positioned relative to the screen edges.
 
 ## Installation
 
