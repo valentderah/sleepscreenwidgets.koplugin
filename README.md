@@ -4,7 +4,7 @@ English | [Русский](README.ru.md)
 
 A [KOReader](https://github.com/koreader/koreader) plugin that replaces the default sleep screen with a configurable widget grid in an **iOS-style** layout.
 
-![Widget example](assets/screenshot-sleep-grid.png)
+![Sleep screen grid on an e-reader: date and time, current book, quote, calendar, and activity widgets](assets/screenshot-sleep-grid.png)
 
 ## Features
 

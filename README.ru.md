@@ -4,7 +4,7 @@
 
 Плагин для [KOReader](https://github.com/koreader/koreader), который заменяет стандартный экран сна на настраиваемую сетку виджетов в стиле iOS. 
 
-![Пример виджетов](assets/screenshot-sleep-grid.png)
+![Экран сна на ридере: дата и время, книга, цитата, календарь и активность](assets/screenshot-sleep-grid.png)
 
 ## Возможности
 
